@@ -42,7 +42,7 @@ var (
 	}
 
         requiredAnnotations = []string{
-                service.beta.kubernetes.io/oci-load-balancer-security-list-management-mode,
+               securityRule,
         }
 	
 	addLabels = map[string]string{
@@ -65,7 +65,8 @@ const (
 	versionLabel   = "app.kubernetes.io/version"
 	componentLabel = "app.kubernetes.io/component"
 	partOfLabel    = "app.kubernetes.io/part-of"
-	managedByLabel = "app.kubernetes.io/managed-by"
+ 	managedByLabel = "app.kubernetes.io/managed-by"
+	securityRule   = "service.beta.kubernetes.io/oci-load-balancer-security-list-management-mode"
 
 	NA = "not_available"
 )
