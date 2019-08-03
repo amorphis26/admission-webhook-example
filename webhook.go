@@ -252,14 +252,18 @@ func (whsvr *WebhookServer) validate(ar *v1beta1.AdmissionReview) *v1beta1.Admis
 			break
 		}
 	}
-        for _, rl := range requiredAnnotations {
-                if _, ok := availableAnnotations[rl]; !ok {
-                        allowed = false
-                        result = &metav1.Status{
-                                Reason: "required annotations are not set",
-                        }
-                        break
-                }
+        
+	switch req.Kind.Kind {
+        case "Service":
+	   for _, rl := range requiredAnnotations {
+                   if _, ok := availableAnnotations[rl]; !ok {
+                           allowed = false
+                           result = &metav1.Status{
+                                   Reason: "required annotations are not set",
+                           }
+                           break
+                   }
+           }   
         }
 
 	return &v1beta1.AdmissionResponse{

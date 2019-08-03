@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: test1-svc
+  labels:
+    app: admission-webhook-example
+  annotations:
+       service.beta.kubernetes.io/oci-load-balancer-security-list-management-mode: "None" 
+spec:
+  ports:
+  - port: 443
+    targetPort: 443
+  selector:
+    app: admission-webhook-example
