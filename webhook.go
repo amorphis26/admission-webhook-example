@@ -193,6 +193,7 @@ func (whsvr *WebhookServer) validate(ar *v1beta1.AdmissionReview) *v1beta1.Admis
 	req := ar.Request
 	var (
 		availableLabels                 map[string]string
+		availableAnnotations                 map[string]string
 		objectMeta                      *metav1.ObjectMeta
 		resourceNamespace, resourceName string
 	)
@@ -225,6 +226,7 @@ func (whsvr *WebhookServer) validate(ar *v1beta1.AdmissionReview) *v1beta1.Admis
 		}
 		resourceName, resourceNamespace, objectMeta = service.Name, service.Namespace, &service.ObjectMeta
 		availableLabels = service.Labels
+	        availableAnnotations = service.Annotations	
 	}
 
 	if !validationRequired(ignoredNamespaces, objectMeta) {
@@ -238,6 +240,8 @@ func (whsvr *WebhookServer) validate(ar *v1beta1.AdmissionReview) *v1beta1.Admis
 	var result *metav1.Status
 	glog.Info("available labels:", availableLabels)
 	glog.Info("required labels", requiredLabels)
+	glog.Info("available annotations:", availableAnnotations)
+        glog.Info("required annotations", requiredAnnotations)
 	for _, rl := range requiredLabels {
 		if _, ok := availableLabels[rl]; !ok {
 			allowed = false
@@ -247,6 +251,15 @@ func (whsvr *WebhookServer) validate(ar *v1beta1.AdmissionReview) *v1beta1.Admis
 			break
 		}
 	}
+        for _, rl := range requiredAnnotations {
+                if _, ok := availableAnnotations[rl]; !ok {
+                        allowed = false
+                        result = &metav1.Status{
+                                Reason: "required annotations are not set",
+                        }
+                        break
+                }
+        }
 
 	return &v1beta1.AdmissionResponse{
 		Allowed: allowed,
