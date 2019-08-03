@@ -40,6 +40,11 @@ var (
 		partOfLabel,
 		managedByLabel,
 	}
+
+        requiredAnnotations = []string{
+                service.beta.kubernetes.io/oci-load-balancer-security-list-management-mode,
+        }
+	
 	addLabels = map[string]string{
 		nameLabel:      NA,
 		instanceLabel:  NA,
