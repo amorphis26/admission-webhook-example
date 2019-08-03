@@ -1,5 +1,6 @@
 #!/bin/bash
-
+export DOCKER_USER=amorphis26
+export GOPATH=/u01/working/webhookstutorial
 : ${DOCKER_USER:? required}
 
 dep ensure -v
